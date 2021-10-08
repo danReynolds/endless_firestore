@@ -28,8 +28,8 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
   /// The padding around the scroll view.
   final EdgeInsets? padding;
 
-  /// The padding in between each item in the list view.
-  final EdgeInsets? itemPadding;
+  /// The padding value in between each item in the list view.
+  final double? itemPadding;
 
   /// The Firestore query to execute to populate the items in the scroll view. A [Query.limit]
   /// is applied to the query for each load based on the specified [EndlessFirestoreStreamBatchDelegate.batchSize].
@@ -52,31 +52,34 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
   final SliverPersistentHeader Function(BuildContext context)? headerBuilder;
 
   /// The state property for the list view header.
-  final EndlessStateProperty<SliverPersistentHeader>? headerBuilderState;
+  final EndlessStateProperty? headerBuilderState;
 
   /// The builder function for the list view empty state.
   final Widget Function(BuildContext context)? emptyBuilder;
 
   /// The state property for the list view empty state.
-  final EndlessStateProperty<Widget>? emptyBuilderState;
+  final EndlessStateProperty? emptyBuilderState;
 
   /// The builder function for the list view load more action widget.
   final Widget Function(BuildContext context)? loadMoreBuilder;
 
   /// The state property for the list view load more action widget.
-  final EndlessStateProperty<Widget>? loadMoreBuilderState;
+  final EndlessStateProperty? loadMoreBuilderState;
 
   /// The builder function for the list view footer.
   final Widget Function(BuildContext context)? footerBuilder;
 
   /// The state property for the list view footer.
-  final EndlessStateProperty<Widget>? footerBuilderState;
+  final EndlessStateProperty? footerBuilderState;
 
   /// The builder function for the list view loading state.
   final Widget Function(BuildContext context)? loadingBuilder;
 
   /// The state property for the list view loading state.
-  final EndlessStateProperty<Widget>? loadingBuilderState;
+  final EndlessStateProperty? loadingBuilderState;
+
+  /// A callback function that provides the current states of the endless scroll view whenever they change.
+  final void Function(Set<EndlessState> states)? onStateChange;
 
   const EndlessFirestoreStreamListView({
     required this.itemBuilder,
@@ -97,6 +100,7 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
     this.padding,
     this.itemPadding,
     this.onLoad,
+    this.onStateChange,
     key,
   }) : super(key: key);
 
@@ -133,6 +137,7 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
               stream: stream,
               padding: padding,
               itemPadding: itemPadding,
+              onStateChange: onStateChange,
               loadOnSubscribe: loadOnSubscribe,
             ),
           );

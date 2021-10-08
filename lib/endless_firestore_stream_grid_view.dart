@@ -52,37 +52,41 @@ class EndlessFirestoreStreamGridView<T> extends StatelessWidget {
   final Widget Function(BuildContext context)? headerBuilder;
 
   /// The state property for the grid view header.
-  final EndlessStateProperty<Widget>? headerBuilderState;
+  final EndlessStateProperty? headerBuilderState;
 
   /// The builder function for the grid view empty state.
   final Widget Function(BuildContext context)? emptyBuilder;
 
   /// The state property for the grid view empty state.
-  final EndlessStateProperty<Widget>? emptyBuilderState;
+  final EndlessStateProperty? emptyBuilderState;
 
   /// The builder function for the grid view load more action widget.
   final Widget Function(BuildContext context)? loadMoreBuilder;
 
   /// The state property for the grid view load more action widget.
-  final EndlessStateProperty<Widget>? loadMoreBuilderState;
+  final EndlessStateProperty? loadMoreBuilderState;
 
   /// The builder function for the grid view footer.
   final Widget Function(BuildContext context)? footerBuilder;
 
   /// The state property for the grid view footer.
-  final EndlessStateProperty<Widget>? footerBuilderState;
+  final EndlessStateProperty? footerBuilderState;
 
   /// The builder function for the grid view loading state.
   final Widget Function(BuildContext context)? loadingBuilder;
 
   /// The state property for the grid view loading state.
-  final EndlessStateProperty<Widget>? loadingBuilderState;
+  final EndlessStateProperty? loadingBuilderState;
+
+  /// A callback function that provides the current states of the endless scroll view whenever they change.
+  final void Function(Set<EndlessState> states)? onStateChange;
 
   const EndlessFirestoreStreamGridView({
     required this.itemBuilder,
     required this.query,
     required this.batchDelegate,
     required this.gridDelegate,
+    this.onStateChange,
     this.extentAfterFactor,
     this.controller,
     this.padding,
@@ -116,6 +120,7 @@ class EndlessFirestoreStreamGridView<T> extends StatelessWidget {
         }) {
           return EndlessStreamGridView.fromData<QueryDocumentSnapshot<T>>(
             EndlessStreamGridViewData<QueryDocumentSnapshot<T>>(
+              onStateChange: onStateChange,
               extentAfterFactor: extentAfterFactor,
               itemBuilder: itemBuilder,
               loadMore: loadMore,

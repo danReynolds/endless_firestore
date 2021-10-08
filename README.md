@@ -2,7 +2,7 @@
 
 An extension of the [Endless](https://pub.dev/packages/endless) infinite scroll view library with support for Firestore streams.
 
-## Basic Example
+## Basic List Example
 
 ```dart
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-An infinite loading list view that displays documents loaded from the specified [Query](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query-class.html) into a scrollable list. The scroll view subscribes to the documents returned from the query with the [Query.snapshots](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query/snapshots.html) API using the [Query.limit](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query/limit.html) approach described [in this video](https://youtu.be/poqTHxtDXwU?t=470).
+The `EndlessFirestoreStreamListView` displays documents loaded from the specified [Query](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query-class.html) into a scrollable list. The scroll view subscribes to the documents returned from the query with the [Query.snapshots](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query/snapshots.html) API using the [Query.limit](https://pub.dev/documentation/cloud_firestore/latest/cloud_firestore/Query/limit.html) approach described [in this video](https://youtu.be/poqTHxtDXwU?t=470).
 
 > Note that this approach incurs a re-read of **all** current documents when loading successive batches so be aware of the read pricing concerns there. This trade-off was made because of the advantages that come from limit-based batching as best described in the link above. 
 
@@ -54,9 +54,9 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: Text('Endless Firestore stream grid view')),
         body: EndlessFirestoreStreamGridView<String>(
-          paginationDelegate: EndlessPaginationDelegate(
-            pageSize: 5,
-            maxPages: 10,
+          batchDelegate: EndlessFirestoreStreamBatchDelegate(
+            batchSize: 5,
+            maxBatches: 10,
           ),
           query: FirebaseFirestore.instance.collection('users').where('name', isEqualTo: 'Tester'),
           // The only difference between the basic list and grid view is that a grid specifies its delegate such as how many items
