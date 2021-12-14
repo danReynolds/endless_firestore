@@ -25,6 +25,9 @@ class EndlessFirestoreStreamGridView<T> extends StatelessWidget {
   /// or clearing the grid.
   final EndlessFirestoreStreamController? controller;
 
+  /// The scroll controller for the grid view.
+  final ScrollController? scrollController;
+
   /// The padding around the scroll view.
   final EdgeInsets? padding;
 
@@ -89,6 +92,7 @@ class EndlessFirestoreStreamGridView<T> extends StatelessWidget {
     this.onStateChange,
     this.extentAfterFactor,
     this.controller,
+    this.scrollController,
     this.padding,
     this.headerBuilder,
     this.headerBuilderState,
@@ -125,6 +129,7 @@ class EndlessFirestoreStreamGridView<T> extends StatelessWidget {
               itemBuilder: itemBuilder,
               loadMore: loadMore,
               controller: controller,
+              scrollController: scrollController,
               stream: stream,
               headerBuilder: headerBuilder,
               headerBuilderState: headerBuilderState,

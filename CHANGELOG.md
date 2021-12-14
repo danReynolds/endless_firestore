@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Expose scroll controller in public API
+
 ## 1.1.0
 
 * Bump to using latest version of `Endless`

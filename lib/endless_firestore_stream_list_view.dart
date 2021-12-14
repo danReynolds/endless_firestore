@@ -25,6 +25,9 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
   /// or clearing the list.
   final EndlessFirestoreStreamController? controller;
 
+  /// The scroll controller for the list view.
+  final ScrollController? scrollController;
+
   /// The padding around the scroll view.
   final EdgeInsets? padding;
 
@@ -97,6 +100,7 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
     this.footerBuilder,
     this.footerBuilderState,
     this.controller,
+    this.scrollController,
     this.padding,
     this.itemPadding,
     this.onLoad,
@@ -124,6 +128,7 @@ class EndlessFirestoreStreamListView<T> extends StatelessWidget {
               itemBuilder: itemBuilder,
               loadMore: loadMore,
               controller: controller,
+              scrollController: scrollController,
               headerBuilder: headerBuilder,
               headerBuilderState: headerBuilderState,
               emptyBuilder: emptyBuilder,

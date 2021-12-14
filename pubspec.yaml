@@ -1,6 +1,6 @@
 name: endless_firestore
 description: An infinite scroll view that extends the Endless library with support for Firestore streams.
-version: 1.1.0
+version: 1.2.0
 homepage: https://github.com/danReynolds/endless
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  endless: ^1.4.1
+  endless: ^1.6.0
   cloud_firestore: ^2.5.3
 
 dev_dependencies:
