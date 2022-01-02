@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Bugfix for properly resuming loading from streams.
+
 ## 1.2.0
 
 * Expose scroll controller in public API

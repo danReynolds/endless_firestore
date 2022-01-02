@@ -176,8 +176,8 @@ class _EndlessFirestoreStreamBuilderState<T>
               final isResultCountAboveCurrentLimit =
                   resultCount >= currentLimit;
 
-              if (isResultCountAboveCurrentLimit && !hasMaxLimit ||
-                  currentLimit < maxLimit!) {
+              if (isResultCountAboveCurrentLimit &&
+                  (!hasMaxLimit || currentLimit < maxLimit!)) {
                 _endlessStreamController.resume();
               }
             }
