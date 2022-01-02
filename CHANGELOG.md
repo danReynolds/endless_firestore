@@ -1,3 +1,7 @@
+## 1.3.0
+
+* Expose a reload API in the stream controller.
+
 ## 1.2.1
 
 * Bugfix for properly resuming loading from streams.

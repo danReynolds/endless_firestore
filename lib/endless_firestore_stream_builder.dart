@@ -89,11 +89,14 @@ class _EndlessFirestoreStreamBuilderState<T>
           await _inputStream!.cancel();
           _inputStream = null;
         }
-
-        setState(() {
-          _currentBatch = 0;
-        });
+        _currentBatch = 0;
         _endlessStreamController.clear(lazy: lazy);
+      };
+
+      controller.reload = () async {
+        _currentBatch = 0;
+        _endlessStreamController.clear(lazy: true);
+        _loadMore();
       };
     }
   }
@@ -111,9 +114,7 @@ class _EndlessFirestoreStreamBuilderState<T>
       await _inputStream!.cancel();
     }
 
-    setState(() {
-      _currentBatch += 1;
-    });
+    _currentBatch += 1;
 
     // Reset the result count diff per load. If later the stream updates due to a remote change,
     // the result count can be incremented/decremented for added or removed docs.
@@ -151,38 +152,32 @@ class _EndlessFirestoreStreamBuilderState<T>
           }
         });
 
-        setState(
-          () {
-            resultCount = resultCount + resultCountDiff;
+        resultCount = resultCount + resultCountDiff;
 
-            if (!_endlessStreamController.isPaused()) {
-              final hasReachedMaxLimit =
-                  hasMaxLimit && currentLimit == maxLimit;
+        if (!_endlessStreamController.isPaused()) {
+          final hasReachedMaxLimit = hasMaxLimit && currentLimit == maxLimit;
 
-              // If the number of docs returned from the network is less than the current limit, we
-              // know that there are no more docs to load.
-              final hasFetchedTooFewDocsFromNetwork =
-                  !snapshot.metadata.isFromCache && docs.length < currentLimit;
+          // If the number of docs returned from the network is less than the current limit, we
+          // know that there are no more docs to load.
+          final hasFetchedTooFewDocsFromNetwork =
+              !snapshot.metadata.isFromCache && docs.length < currentLimit;
 
-              // In addition to the above conditions, we only want to stop attempting to load if the docs came from the network, not the cache, as the cache
-              // does not represent the full list of potential documents.
-              if (hasReachedMaxLimit || hasFetchedTooFewDocsFromNetwork) {
-                _endlessStreamController.pause();
-              }
-            } else {
-              // If the result count has increased such as when a new document is created,
-              // increasing the total from a limit threshold of ex. 20 to 21, then it would be possible
-              // to continue loading the next limit of 30 and we should re-enable the ability to load more.
-              final isResultCountAboveCurrentLimit =
-                  resultCount >= currentLimit;
+          // In addition to the above conditions, we only want to stop attempting to load if the docs came from the network, not the cache, as the cache
+          // does not represent the full list of potential documents.
+          if (hasReachedMaxLimit || hasFetchedTooFewDocsFromNetwork) {
+            _endlessStreamController.pause();
+          }
+        } else {
+          // If the result count has increased such as when a new document is created,
+          // increasing the total from a limit threshold of ex. 20 to 21, then it would be possible
+          // to continue loading the next limit of 30 and we should re-enable the ability to load more.
+          final isResultCountAboveCurrentLimit = resultCount >= currentLimit;
 
-              if (isResultCountAboveCurrentLimit &&
-                  (!hasMaxLimit || currentLimit < maxLimit!)) {
-                _endlessStreamController.resume();
-              }
-            }
-          },
-        );
+          if (isResultCountAboveCurrentLimit &&
+              (!hasMaxLimit || currentLimit < maxLimit!)) {
+            _endlessStreamController.resume();
+          }
+        }
 
         // Since a Firestore load more stream will always return the full set of items, not just the new ones,
         // we lazy clear the stream load more controller to perform the full replace.
