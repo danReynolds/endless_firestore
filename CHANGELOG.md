@@ -1,3 +1,7 @@
+## 1.4.0
+
+* Bump cloud_firestore to version 3.
+
 ## 1.3.0
 
 * Expose a reload API in the stream controller.
